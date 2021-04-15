@@ -1,0 +1,55 @@
+{
+  "name": "unfold.fi-contracts",
+  "version": "1.0.0",
+  "description": "Unfold Finance Solidity Contracts",
+  "engines": {
+    "node": "12.x"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unfold.fi/Contracts.git"
+  },
+  "author": "CryptoKombat <hello@unfold.finance>",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/unfold.fi/Contracts/issues"
+  },
+  "homepage": "https://github.com/unfold.fi/Contracts/#readme",
+  "scripts": {
+    "start": "hardhat node",
+    "precompile": "hardhat clean",
+    "compile": "hardhat compile",
+    "deploy": "hardhat deploy",
+    "verify": "hardhat verify",
+    "export": "hardhat export --export-all ./deployments/export.json",
+    "generate-merkle-root": "ts-node scripts/opensea/generate-merkle-root.ts",
+    "parse-opensea": "ts-node scripts/opensea/log-parser.ts",
+    "generate-airdrop-file": "ts-node scripts/opensea/log-converter.ts",
+    "generate-collection": "ts-node scripts/collection/generator.ts",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^2.1.1",
+    "@openzeppelin/contracts": "^3.4.1",
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.33",
+    "chai": "^4.3.3",
+    "chai-ethers": "^0.0.1",
+    "commander": "^7.1.0",
+    "dotenv": "^8.2.0",
+    "ethereum-waffle": "^3.3.0",
+    "ethereumjs-util": "^7.0.9",
+    "ethers": "^5.0.32",
+    "hardhat": "^2.1.1",
+    "hardhat-deploy": "^0.7.0-beta.47",
+    "hardhat-deploy-ethers": "^0.3.0-beta.7",
+    "hardhat-gas-reporter": "^1.0.4",
+    "mocha": "^8.3.1",
+    "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.6",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
