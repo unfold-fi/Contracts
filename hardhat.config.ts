@@ -4,6 +4,8 @@ import 'hardhat-deploy'
 import 'hardhat-deploy-ethers'
 import 'hardhat-gas-reporter'
 import '@nomiclabs/hardhat-etherscan'
+import '@typechain/hardhat'
+import 'hardhat-tracer'
 
 import { HardhatUserConfig } from 'hardhat/config'
 
@@ -26,6 +28,14 @@ const config: HardhatUserConfig = {
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      gas: 'auto',
+      gasPrice: 'auto',
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+    },
+    kovan: {
+      url: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       gas: 'auto',
       gasPrice: 'auto',
       accounts: {
@@ -55,6 +65,7 @@ const config: HardhatUserConfig = {
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
     currency: 'USD',
     gasPrice: 100,
+    enabled: true,
   },
   solidity: {
     version: '0.6.12',
