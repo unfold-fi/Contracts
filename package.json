@@ -23,10 +23,6 @@
     "deploy": "hardhat deploy",
     "verify": "hardhat verify",
     "export": "hardhat export --export-all ./deployments/export.json",
-    "generate-merkle-root": "ts-node scripts/opensea/generate-merkle-root.ts",
-    "parse-opensea": "ts-node scripts/opensea/log-parser.ts",
-    "generate-airdrop-file": "ts-node scripts/opensea/log-converter.ts",
-    "generate-collection": "ts-node scripts/collection/generator.ts",
     "test": "hardhat test"
   },
   "devDependencies": {
