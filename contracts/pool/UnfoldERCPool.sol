@@ -14,7 +14,6 @@ contract UnfoldERCPool is PoolTokenWrapper, Ownable {
 
     IERC20 public rewardToken;
     uint256 public duration;
-    uint256 public constant WEEK_DURATION = 604800;
 
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
@@ -28,11 +27,8 @@ contract UnfoldERCPool is PoolTokenWrapper, Ownable {
     address payable public feeBeneficiar;
 
     uint256 public constant FEE_BASE = 10000;
-    uint256 public depositFeeBp = 100;
-    uint256 public minWithdrawFeeBp = 100;
+    uint256 public constant minWithdrawFeeBp = 100;
 
-    event DepositFeeUpdated(uint256 fee);
-    event WithdrawFeeUpdated(uint256 fee);
     event FeeBeneficiarUpdated(address indexed beneficiar);
     event RewardAdded(uint256 reward);
     event Staked(address indexed user, uint256 amount);
@@ -58,21 +54,6 @@ contract UnfoldERCPool is PoolTokenWrapper, Ownable {
             userRewardPerTokenPaid[account] = rewardPerTokenStored;
         }
         _;
-    }
-
-    function updateDepositFee(uint256 _depositFeeBp) external onlyOwner {
-        require(_depositFeeBp >= 0 && _depositFeeBp <= FEE_BASE, 'UnfoldPool: fee should be between 0 and FEE_BASE');
-        depositFeeBp = _depositFeeBp;
-        emit DepositFeeUpdated(_depositFeeBp);
-    }
-
-    function updateMinWithdrawFee(uint256 _minWithdrawFeeBp) external onlyOwner {
-        require(
-            _minWithdrawFeeBp >= 0 && _minWithdrawFeeBp <= FEE_BASE,
-            'UnfoldPool: fee should be between 0 and FEE_BASE'
-        );
-        minWithdrawFeeBp = _minWithdrawFeeBp;
-        emit WithdrawFeeUpdated(_minWithdrawFeeBp);
     }
 
     function updateFeeBeneficiar(address payable _feeBeneficiar) external onlyOwner {
@@ -105,16 +86,11 @@ contract UnfoldERCPool is PoolTokenWrapper, Ownable {
     function stake(uint256 _amount) public override updateReward(msg.sender) {
         require(_amount > 0, 'UnfoldPool: cannot stake 0');
 
-        uint256 feeAmount = calculateFee(depositFeeBp, _amount);
-        uint256 stakeAmount = _amount.sub(feeAmount);
-
         lastDepositTime[msg.sender] = block.timestamp;
 
-        poolToken.safeTransferFrom(msg.sender, feeBeneficiar, feeAmount);
+        super.stake(_amount);
 
-        super.stake(stakeAmount);
-
-        emit Staked(msg.sender, stakeAmount);
+        emit Staked(msg.sender, _amount);
     }
 
     function withdraw(uint256 _amount, uint256 _) public override updateReward(msg.sender) {
@@ -177,13 +153,13 @@ contract UnfoldERCPool is PoolTokenWrapper, Ownable {
         uint256 fee = minWithdrawFeeBp;
         uint256 depositDuration = block.timestamp.sub(_despositTime);
 
-        if (depositDuration < WEEK_DURATION) {
+        if (depositDuration < 1 weeks) {
             fee = fee.mul(5);
-        } else if (depositDuration >= WEEK_DURATION && depositDuration < WEEK_DURATION.mul(2)) {
+        } else if (depositDuration >= 1 weeks && depositDuration < 2 weeks) {
             fee = fee.mul(4);
-        } else if (depositDuration >= WEEK_DURATION.mul(2) && depositDuration < WEEK_DURATION.mul(3)) {
+        } else if (depositDuration >= 2 weeks && depositDuration < 3 weeks) {
             fee = fee.mul(3);
-        } else if (depositDuration >= WEEK_DURATION.mul(3) && depositDuration < WEEK_DURATION.mul(4)) {
+        } else if (depositDuration >= 3 weeks && depositDuration < 4 weeks) {
             fee = fee.mul(2);
         }
         return fee;

@@ -105,50 +105,6 @@ context('UnfoldERCPool', () => {
     })
   })
 
-  describe('#updateDepositFee()', async () => {
-    it('admin can update deposit fee', async () => {
-      await expect(pool.updateDepositFee(NEW_DEPOSIT_FEE)).to.emit(pool, 'DepositFeeUpdated').withArgs(NEW_DEPOSIT_FEE)
-
-      expect(await pool.depositFeeBp()).to.be.equal(NEW_DEPOSIT_FEE)
-    })
-
-    it('fee should be >= 0 and <= FEE_BASE', async () => {
-      await expect(pool.updateDepositFee(BigNumber.from('-1'))).to.be.reverted
-      await expect(pool.updateDepositFee(BigNumber.from('10001'))).to.be.revertedWith(
-        'UnfoldPool: fee should be between 0 and FEE_BASE'
-      )
-    })
-
-    it('non-admin can not update deposit fee', async () => {
-      await expect(pool.connect(await ethers.getSigner(wallet1)).updateDepositFee(NEW_DEPOSIT_FEE)).to.be.revertedWith(
-        'Ownable: caller is not the owner'
-      )
-    })
-  })
-
-  describe('#updateMinWithdrawFee()', async () => {
-    it('admin can update withdraw fee', async () => {
-      await expect(pool.updateMinWithdrawFee(NEW_MIN_WITHDRAW_FEE))
-        .to.emit(pool, 'WithdrawFeeUpdated')
-        .withArgs(NEW_MIN_WITHDRAW_FEE)
-
-      expect(await pool.minWithdrawFeeBp()).to.be.equal(NEW_MIN_WITHDRAW_FEE)
-    })
-
-    it('fee should be >= 0 and <= FEE_BASE', async () => {
-      await expect(pool.updateMinWithdrawFee(BigNumber.from('-1'))).to.be.reverted
-      await expect(pool.updateMinWithdrawFee(BigNumber.from('10001'))).to.be.revertedWith(
-        'UnfoldPool: fee should be between 0 and FEE_BASE'
-      )
-    })
-
-    it('non-admin can not update withdraw fee', async () => {
-      await expect(
-        pool.connect(await ethers.getSigner(wallet1)).updateMinWithdrawFee(NEW_MIN_WITHDRAW_FEE)
-      ).to.be.revertedWith('Ownable: caller is not the owner')
-    })
-  })
-
   describe('#updateFeeBeneficiar()', async () => {
     it('admin can update fee beneficiar', async () => {
       await expect(pool.updateFeeBeneficiar(wallet1)).to.emit(pool, 'FeeBeneficiarUpdated').withArgs(wallet1)
@@ -172,19 +128,14 @@ context('UnfoldERCPool', () => {
   describe('#stake()', async () => {
     it('Check stake and fee amount', async () => {
       const amount = ethers.utils.parseUnits('1')
-      const depositFeeBp = await pool.depositFeeBp()
-
-      const fee = calculateFee(depositFeeBp, amount)
-      const stakeAmount = applyFee(depositFeeBp, amount)
 
       await expect(pool.connect(await ethers.getSigner(wallet1)).stake(amount))
         .to.emit(pool, 'Staked')
-        .withArgs(wallet1, stakeAmount)
+        .withArgs(wallet1, amount)
 
       const latest = await time.latest(ethers.provider)
 
-      expect(await pool.balanceOf(wallet1)).to.be.eq(stakeAmount)
-      expect(await poolTokenInstance.balanceOf(feeBeneficiar)).to.be.eq(fee)
+      expect(await pool.balanceOf(wallet1)).to.be.eq(amount)
       expect(await pool.lastDepositTime(wallet1)).to.be.eq(latest)
     })
   })

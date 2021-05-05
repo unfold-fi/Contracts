@@ -22,11 +22,9 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 interface UnfoldERCPoolInterface extends ethers.utils.Interface {
   functions: {
     "FEE_BASE()": FunctionFragment;
-    "WEEK_DURATION()": FunctionFragment;
     "addReward(uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "calculateWithdrawalFeeBp(uint256)": FunctionFragment;
-    "depositFeeBp()": FunctionFragment;
     "duration()": FunctionFragment;
     "earned(address)": FunctionFragment;
     "exit()": FunctionFragment;
@@ -48,18 +46,12 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
     "stake(uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "updateDepositFee(uint256)": FunctionFragment;
     "updateFeeBeneficiar(address)": FunctionFragment;
-    "updateMinWithdrawFee(uint256)": FunctionFragment;
     "userRewardPerTokenPaid(address)": FunctionFragment;
     "withdraw(uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "FEE_BASE", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "WEEK_DURATION",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "addReward",
     values: [BigNumberish]
@@ -68,10 +60,6 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "calculateWithdrawalFeeBp",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depositFeeBp",
-    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "duration", values?: undefined): string;
   encodeFunctionData(functionFragment: "earned", values: [string]): string;
@@ -134,16 +122,8 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateDepositFee",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "updateFeeBeneficiar",
     values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "updateMinWithdrawFee",
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "userRewardPerTokenPaid",
@@ -155,18 +135,10 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "FEE_BASE", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "WEEK_DURATION",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "addReward", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "calculateWithdrawalFeeBp",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depositFeeBp",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "duration", data: BytesLike): Result;
@@ -227,15 +199,7 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateDepositFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "updateFeeBeneficiar",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "updateMinWithdrawFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -245,23 +209,19 @@ interface UnfoldERCPoolInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
-    "DepositFeeUpdated(uint256)": EventFragment;
     "FeeBeneficiarUpdated(address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "RewardAdded(uint256)": EventFragment;
     "RewardPaid(address,uint256)": EventFragment;
     "Staked(address,uint256)": EventFragment;
-    "WithdrawFeeUpdated(uint256)": EventFragment;
     "Withdrawn(address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "DepositFeeUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FeeBeneficiarUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardAdded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardPaid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "WithdrawFeeUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdrawn"): EventFragment;
 }
 
@@ -313,10 +273,6 @@ export class UnfoldERCPool extends Contract {
 
     "FEE_BASE()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    WEEK_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    "WEEK_DURATION()"(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     addReward(
       reward: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -343,10 +299,6 @@ export class UnfoldERCPool extends Contract {
       _despositTime: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    depositFeeBp(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    "depositFeeBp()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     duration(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -470,16 +422,6 @@ export class UnfoldERCPool extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    updateDepositFee(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "updateDepositFee(uint256)"(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     updateFeeBeneficiar(
       _feeBeneficiar: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -487,16 +429,6 @@ export class UnfoldERCPool extends Contract {
 
     "updateFeeBeneficiar(address)"(
       _feeBeneficiar: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    updateMinWithdrawFee(
-      _minWithdrawFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "updateMinWithdrawFee(uint256)"(
-      _minWithdrawFeeBp: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -527,10 +459,6 @@ export class UnfoldERCPool extends Contract {
 
   "FEE_BASE()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-  WEEK_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "WEEK_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
-
   addReward(
     reward: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -557,10 +485,6 @@ export class UnfoldERCPool extends Contract {
     _despositTime: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  depositFeeBp(overrides?: CallOverrides): Promise<BigNumber>;
-
-  "depositFeeBp()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   duration(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -679,16 +603,6 @@ export class UnfoldERCPool extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  updateDepositFee(
-    _depositFeeBp: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "updateDepositFee(uint256)"(
-    _depositFeeBp: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   updateFeeBeneficiar(
     _feeBeneficiar: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -696,16 +610,6 @@ export class UnfoldERCPool extends Contract {
 
   "updateFeeBeneficiar(address)"(
     _feeBeneficiar: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  updateMinWithdrawFee(
-    _minWithdrawFeeBp: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "updateMinWithdrawFee(uint256)"(
-    _minWithdrawFeeBp: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -736,10 +640,6 @@ export class UnfoldERCPool extends Contract {
 
     "FEE_BASE()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    WEEK_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "WEEK_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     addReward(reward: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     "addReward(uint256)"(
@@ -763,10 +663,6 @@ export class UnfoldERCPool extends Contract {
       _despositTime: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    depositFeeBp(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "depositFeeBp()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     duration(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -873,16 +769,6 @@ export class UnfoldERCPool extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    updateDepositFee(
-      _depositFeeBp: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "updateDepositFee(uint256)"(
-      _depositFeeBp: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     updateFeeBeneficiar(
       _feeBeneficiar: string,
       overrides?: CallOverrides
@@ -890,16 +776,6 @@ export class UnfoldERCPool extends Contract {
 
     "updateFeeBeneficiar(address)"(
       _feeBeneficiar: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    updateMinWithdrawFee(
-      _minWithdrawFeeBp: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "updateMinWithdrawFee(uint256)"(
-      _minWithdrawFeeBp: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -927,10 +803,6 @@ export class UnfoldERCPool extends Contract {
   };
 
   filters: {
-    DepositFeeUpdated(
-      fee: null
-    ): TypedEventFilter<[BigNumber], { fee: BigNumber }>;
-
     FeeBeneficiarUpdated(
       beneficiar: string | null
     ): TypedEventFilter<[string], { beneficiar: string }>;
@@ -963,10 +835,6 @@ export class UnfoldERCPool extends Contract {
       { user: string; amount: BigNumber }
     >;
 
-    WithdrawFeeUpdated(
-      fee: null
-    ): TypedEventFilter<[BigNumber], { fee: BigNumber }>;
-
     Withdrawn(
       user: string | null,
       amount: null
@@ -980,10 +848,6 @@ export class UnfoldERCPool extends Contract {
     FEE_BASE(overrides?: CallOverrides): Promise<BigNumber>;
 
     "FEE_BASE()"(overrides?: CallOverrides): Promise<BigNumber>;
-
-    WEEK_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "WEEK_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     addReward(
       reward: BigNumberish,
@@ -1011,10 +875,6 @@ export class UnfoldERCPool extends Contract {
       _despositTime: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    depositFeeBp(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "depositFeeBp()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     duration(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1136,16 +996,6 @@ export class UnfoldERCPool extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    updateDepositFee(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "updateDepositFee(uint256)"(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     updateFeeBeneficiar(
       _feeBeneficiar: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1153,16 +1003,6 @@ export class UnfoldERCPool extends Contract {
 
     "updateFeeBeneficiar(address)"(
       _feeBeneficiar: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    updateMinWithdrawFee(
-      _minWithdrawFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "updateMinWithdrawFee(uint256)"(
-      _minWithdrawFeeBp: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1194,10 +1034,6 @@ export class UnfoldERCPool extends Contract {
 
     "FEE_BASE()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    WEEK_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "WEEK_DURATION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     addReward(
       reward: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1227,10 +1063,6 @@ export class UnfoldERCPool extends Contract {
       _despositTime: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    depositFeeBp(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "depositFeeBp()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     duration(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1372,16 +1204,6 @@ export class UnfoldERCPool extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    updateDepositFee(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "updateDepositFee(uint256)"(
-      _depositFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     updateFeeBeneficiar(
       _feeBeneficiar: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1389,16 +1211,6 @@ export class UnfoldERCPool extends Contract {
 
     "updateFeeBeneficiar(address)"(
       _feeBeneficiar: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateMinWithdrawFee(
-      _minWithdrawFeeBp: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "updateMinWithdrawFee(uint256)"(
-      _minWithdrawFeeBp: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
