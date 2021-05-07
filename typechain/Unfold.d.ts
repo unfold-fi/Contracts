@@ -19,21 +19,49 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface UnfoldTokenInterface extends ethers.utils.Interface {
+interface UnfoldInterface extends ethers.utils.Interface {
   functions: {
+    "EMISSION_CLIFF()": FunctionFragment;
+    "EMISSION_PER_YEAR_BP()": FunctionFragment;
+    "MAX_EMISSION_PER_YEAR_BP()": FunctionFragment;
+    "YEAR_DURATION()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
+    "availableEmission()": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "claimEmission()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
+    "nextEmissionTime()": FunctionFragment;
+    "owner()": FunctionFragment;
+    "recoverERC20(address)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "setEmissionPerYearBp(uint256)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "EMISSION_CLIFF",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "EMISSION_PER_YEAR_BP",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_EMISSION_PER_YEAR_BP",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "YEAR_DURATION",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -42,7 +70,15 @@ interface UnfoldTokenInterface extends ethers.utils.Interface {
     functionFragment: "approve",
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "availableEmission",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "claimEmission",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
@@ -53,6 +89,23 @@ interface UnfoldTokenInterface extends ethers.utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "nextEmissionTime",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "recoverERC20",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setEmissionPerYearBp",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -66,10 +119,38 @@ interface UnfoldTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [string]
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "EMISSION_CLIFF",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "EMISSION_PER_YEAR_BP",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_EMISSION_PER_YEAR_BP",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "YEAR_DURATION",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "availableEmission",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimEmission",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
@@ -80,6 +161,23 @@ interface UnfoldTokenInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nextEmissionTime",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "recoverERC20",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setEmissionPerYearBp",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -90,17 +188,23 @@ interface UnfoldTokenInterface extends ethers.utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class UnfoldToken extends Contract {
+export class Unfold extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -141,9 +245,27 @@ export class UnfoldToken extends Contract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: UnfoldTokenInterface;
+  interface: UnfoldInterface;
 
   functions: {
+    EMISSION_CLIFF(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "EMISSION_CLIFF()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MAX_EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "MAX_EMISSION_PER_YEAR_BP()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    YEAR_DURATION(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "YEAR_DURATION()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     allowance(
       owner: string,
       spender: string,
@@ -168,12 +290,28 @@ export class UnfoldToken extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    availableEmission(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { amount: BigNumber }>;
+
+    "availableEmission()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { amount: BigNumber }>;
+
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     "balanceOf(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    claimEmission(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "claimEmission()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
@@ -206,6 +344,42 @@ export class UnfoldToken extends Contract {
     name(overrides?: CallOverrides): Promise<[string]>;
 
     "name()"(overrides?: CallOverrides): Promise<[string]>;
+
+    nextEmissionTime(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "nextEmissionTime()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
+    "owner()"(overrides?: CallOverrides): Promise<[string]>;
+
+    recoverERC20(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "recoverERC20(address)"(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "renounceOwnership()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setEmissionPerYearBp(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "setEmissionPerYearBp(uint256)"(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -240,7 +414,33 @@ export class UnfoldToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
+
+  EMISSION_CLIFF(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "EMISSION_CLIFF()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MAX_EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "MAX_EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "YEAR_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: string,
@@ -266,12 +466,24 @@ export class UnfoldToken extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  availableEmission(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "availableEmission()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   "balanceOf(address)"(
     account: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  claimEmission(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "claimEmission()"(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -304,6 +516,42 @@ export class UnfoldToken extends Contract {
   name(overrides?: CallOverrides): Promise<string>;
 
   "name()"(overrides?: CallOverrides): Promise<string>;
+
+  nextEmissionTime(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "nextEmissionTime()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
+
+  "owner()"(overrides?: CallOverrides): Promise<string>;
+
+  recoverERC20(
+    _token: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "recoverERC20(address)"(
+    _token: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "renounceOwnership()"(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setEmissionPerYearBp(
+    _bp: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "setEmissionPerYearBp(uint256)"(
+    _bp: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -339,7 +587,33 @@ export class UnfoldToken extends Contract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "transferOwnership(address)"(
+    newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    EMISSION_CLIFF(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "EMISSION_CLIFF()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "MAX_EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "YEAR_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -364,12 +638,20 @@ export class UnfoldToken extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    availableEmission(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "availableEmission()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "balanceOf(address)"(
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    claimEmission(overrides?: CallOverrides): Promise<void>;
+
+    "claimEmission()"(overrides?: CallOverrides): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
@@ -402,6 +684,35 @@ export class UnfoldToken extends Contract {
     name(overrides?: CallOverrides): Promise<string>;
 
     "name()"(overrides?: CallOverrides): Promise<string>;
+
+    nextEmissionTime(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "nextEmissionTime()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    "owner()"(overrides?: CallOverrides): Promise<string>;
+
+    recoverERC20(_token: string, overrides?: CallOverrides): Promise<void>;
+
+    "recoverERC20(address)"(
+      _token: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
+
+    setEmissionPerYearBp(
+      _bp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setEmissionPerYearBp(uint256)"(
+      _bp: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -436,6 +747,16 @@ export class UnfoldToken extends Contract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -446,6 +767,14 @@ export class UnfoldToken extends Contract {
     ): TypedEventFilter<
       [string, string, BigNumber],
       { owner: string; spender: string; value: BigNumber }
+    >;
+
+    OwnershipTransferred(
+      previousOwner: string | null,
+      newOwner: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
     >;
 
     Transfer(
@@ -459,6 +788,22 @@ export class UnfoldToken extends Contract {
   };
 
   estimateGas: {
+    EMISSION_CLIFF(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "EMISSION_CLIFF()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_EMISSION_PER_YEAR_BP(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "MAX_EMISSION_PER_YEAR_BP()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    YEAR_DURATION(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "YEAR_DURATION()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -483,11 +828,23 @@ export class UnfoldToken extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    availableEmission(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "availableEmission()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     "balanceOf(address)"(
       account: string,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    claimEmission(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "claimEmission()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
@@ -522,6 +879,42 @@ export class UnfoldToken extends Contract {
 
     "name()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    nextEmissionTime(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "nextEmissionTime()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    recoverERC20(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "recoverERC20(address)"(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "renounceOwnership()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setEmissionPerYearBp(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "setEmissionPerYearBp(uint256)"(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
     "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -555,9 +948,45 @@ export class UnfoldToken extends Contract {
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    EMISSION_CLIFF(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "EMISSION_CLIFF()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    EMISSION_PER_YEAR_BP(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "EMISSION_PER_YEAR_BP()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    MAX_EMISSION_PER_YEAR_BP(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "MAX_EMISSION_PER_YEAR_BP()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    YEAR_DURATION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "YEAR_DURATION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     allowance(
       owner: string,
       spender: string,
@@ -582,6 +1011,12 @@ export class UnfoldToken extends Contract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    availableEmission(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "availableEmission()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     balanceOf(
       account: string,
       overrides?: CallOverrides
@@ -590,6 +1025,14 @@ export class UnfoldToken extends Contract {
     "balanceOf(address)"(
       account: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    claimEmission(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "claimEmission()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -624,6 +1067,44 @@ export class UnfoldToken extends Contract {
 
     "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    nextEmissionTime(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "nextEmissionTime()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    recoverERC20(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "recoverERC20(address)"(
+      _token: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "renounceOwnership()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setEmissionPerYearBp(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "setEmissionPerYearBp(uint256)"(
+      _bp: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -655,6 +1136,16 @@ export class UnfoldToken extends Contract {
       sender: string,
       recipient: string,
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "transferOwnership(address)"(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
