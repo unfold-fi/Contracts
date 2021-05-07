@@ -12,7 +12,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const chainId = await hre.getChainId()
 
-  const tokenInstance = await deployments.get('UnfoldToken')
+  const tokenInstance = await deployments.get('Unfold')
 
   let wethAddress = WethPool.wethAddress
 
