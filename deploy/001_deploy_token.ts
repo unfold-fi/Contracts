@@ -12,7 +12,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   await deploy('Unfold', {
     from: deployer,
-    args: [Token.initial],
+    args: [Token.initial, Token.governance],
     log: true,
   })
 }
