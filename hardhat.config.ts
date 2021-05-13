@@ -46,9 +46,7 @@ const config: HardhatUserConfig = {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       gas: 'auto',
       gasPrice: 'auto',
-      accounts: {
-        mnemonic: process.env.MNEMONIC_PROD,
-      },
+      accounts: [`${process.env.DEPLOYER_PK}`],
     },
   },
   etherscan: {
