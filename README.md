@@ -47,7 +47,7 @@ yarn verify --network kovan 0x8c6C1BaaCFc9Ca1f13fD575175BE5e5472186130 "10000000
 ```
 
 ```
-yarn deploy --network mainnet --tags Token --gasprice 111000000000
+yarn deploy --network mainnet --tags Token --gasprice 66000000000
 
 yarn verify --network mainnet 0x56FA4Fa9608e645ef2125DbAFA560a68231E6366 "1000000000000000000000000000"
 ```
@@ -57,6 +57,8 @@ yarn verify --network mainnet 0x56FA4Fa9608e645ef2125DbAFA560a68231E6366 "100000
 ```
 yarn deploy --network kovan --tags DaiPool
 
+yarn deploy --network mainnet --tags DaiPool --gasprice 66000000000
+
 yarn verify --network kovan 0x510702c6653e5Eb51b499709d7db10fcBc510c9d "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa" "0x8c6C1BaaCFc9Ca1f13fD575175BE5e5472186130" "8640000" "0xd5f42b2e244711e1DFD0AfD5B720B808d9eDebeB"
 ```
 
@@ -64,6 +66,8 @@ yarn verify --network kovan 0x510702c6653e5Eb51b499709d7db10fcBc510c9d "0x4F96Fe
 
 ```
 yarn deploy --network kovan --tags WethPool
+
+yarn deploy --network mainnet --tags WethPool --gasprice 66000000000
 
 yarn verify --network kovan 0xBCa59451403Dd396390cc313a8ca432deBc0414a "0xd0A1E359811322d97991E03f863a0C30C2cF029C" "0x8c6C1BaaCFc9Ca1f13fD575175BE5e5472186130" "8640000" "0xd5f42b2e244711e1DFD0AfD5B720B808d9eDebeB"
 ```
