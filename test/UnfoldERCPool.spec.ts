@@ -12,6 +12,7 @@ const FEE_BASE = BigNumber.from('10000')
 const DURATION = BigNumber.from('8640000') // 100 days
 const WEEK_DURATION = BigNumber.from('604800')
 
+const MIN_STAKE = BigNumber.from('1')
 const DEPOSIT_FEE = BigNumber.from('1000')
 const NEW_DEPOSIT_FEE = BigNumber.from('1000')
 const MIN_WITHDRAW_FEE = BigNumber.from('1000')
@@ -140,6 +141,38 @@ context('UnfoldERCPool', () => {
     })
   })
 
+  describe('#withdraw(), #exit() with min stake', async () => {
+    beforeEach(async () => {
+      const balance = await pool.balanceOf(wallet1)
+      if (balance.gt(0)) {
+        await pool.connect(await ethers.getSigner(wallet1)).exit()
+      }
+      await pool.connect(await ethers.getSigner(wallet1)).stake(MIN_STAKE)
+    })
+
+    it('Check withdraw next block', async () => {
+      const balance = await pool.balanceOf(wallet1)
+      const feeBalance = await poolTokenInstance.balanceOf(feeBeneficiar)
+      const depositTime = await pool.lastDepositTime(wallet1)
+
+      const withdrawFeeBp = await pool.calculateWithdrawalFeeBp(depositTime)
+      const feeAmount = calculateFee(withdrawFeeBp, balance)
+      const withdrawAmount = balance.sub(feeAmount)
+
+      // console.log('b', balance.toString())
+      // console.log('t', depositTime.toString())
+      // console.log('fb', withdrawFeeBp.toString())
+      // console.log('fa', feeAmount.toString())
+      // console.log('wa', withdrawAmount.toString())
+
+      await expect(pool.connect(await ethers.getSigner(wallet1)).withdraw(balance, balance))
+        .to.emit(pool, 'Withdrawn')
+        .withArgs(wallet1, withdrawAmount)
+
+      expect(await pool.balanceOf(wallet1)).to.be.eq(0)
+      expect(await poolTokenInstance.balanceOf(feeBeneficiar)).to.be.eq(feeBalance.add(feeAmount))
+    })
+  })
   describe('#withdraw(), #exit()', async () => {
     beforeEach(async () => {
       const balance = await pool.balanceOf(wallet1)
